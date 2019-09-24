@@ -34,9 +34,10 @@ class CalendarSpreadStrategy(Moonshot):
     DB_FIELDS = ["Close", "Open"]
     CONIDS = []
     LOOKBACK_WINDOW = 0  # explicitly set LOOKBACK_WINDOW to 0 to avoid loading too much data
-    BBAND_LOOKBACK_WINDOW = 20  # Compute Bollinger Bands over this period (number of minutes)
+    BBAND_LOOKBACK_WINDOW = 60  # Compute Bollinger Bands over this period (number of minutes)
     BBAND_STD = 2  # Set Bollinger Bands this many standard deviations away from mean
     CONTRACT_NUMS = 1, 2  # the contract numbers from which to form the spread (1 = front month)
+    FILL_AT_MIDPOINT = False # True to model getting filled at the midpoint, False to pay the spread
 
     def prices_to_signals(self, prices):
         """
@@ -116,13 +117,17 @@ class CalendarSpreadStrategy(Moonshot):
     def positions_to_gross_returns(self, positions, prices):
         bids = prices.loc["Open"]
         asks = prices.loc["Close"]
-
-        # We buy at the ask and sell at the bid
-        are_buys = positions.diff() > 0
-        are_sells = positions.diff() < 0
         midpoints = (bids + asks) / 2
-        trade_prices = asks.where(are_buys).fillna(
-            bids.where(are_sells)).fillna(midpoints)
+
+        if self.FILL_AT_MIDPOINT:
+            trade_prices = midpoints
+        else:
+            # We buy at the ask and sell at the bid
+            are_buys = positions.diff() > 0
+            are_sells = positions.diff() < 0
+
+            trade_prices = asks.where(are_buys).fillna(
+                bids.where(are_sells)).fillna(midpoints)
 
         gross_returns = trade_prices.pct_change() * positions.shift()
         return gross_returns
@@ -132,8 +137,15 @@ class CLCalendarSpreadStrategy(CalendarSpreadStrategy):
 
     CODE = "calspread-cl"
     UNIVERSES = "cl-fut"
-    DB = "cl-1h-bbo"
-    CONTRACT_NUMS = (1, 3)
+    DB = "cl-1min-bbo"
+    CONTRACT_NUMS = (1, 2)
     BBAND_LOOKBACK_WINDOW = 60
     BBAND_STD = 2
     COMMISSION_CLASS = NymexCommission
+
+
+class FrictionlessCLCalendarSpreadStrategy(CLCalendarSpreadStrategy):
+
+    CODE = "calspread-cl-frictionless"
+    COMMISSION_CLASS = None
+    FILL_AT_MIDPOINT = True

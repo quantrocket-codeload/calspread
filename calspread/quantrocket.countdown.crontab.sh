@@ -14,7 +14,7 @@
 0 7 * * mon-fri quantrocket launchpad start
 
 # collect native combo data each morning
-0 8 * * mon-fri quantrocket satellite exec 'codeload.calspread.collect_combo.collect_combo' --params 'universe:cl-fut' 'contract_months:[1,3]' 'tick_db:cl-combo-tick' 'until:16:30:00 America/New_York'
+0 8 * * mon-fri quantrocket satellite exec 'codeload.calspread.collect_combo.collect_combo' --params 'universe:cl-fut' 'contract_months:[1,2]' 'tick_db:cl-combo-tick' 'until:16:30:00 America/New_York'
 
 # Trade calspread-native-cl every minute from 9 AM to 4 PM. This command "paper trades" by logging orders to flightlog; to 
 # live or paper trade with IB, send orders to blotter instead

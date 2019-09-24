@@ -33,7 +33,7 @@ class NativeCalendarSpreadStrategy(Moonshot):
     DB = None
     DB_FIELDS = ["BidPriceClose", "AskPriceClose"]
     LOOKBACK_WINDOW = 0  # explicitly set LOOKBACK_WINDOW to 0 to avoid loading too much data
-    BBAND_LOOKBACK_WINDOW = 20  # Compute Bollinger Bands over this period (number of minutes)
+    BBAND_LOOKBACK_WINDOW = 60  # Compute Bollinger Bands over this period (number of minutes)
     BBAND_STD = 2  # Set Bollinger Bands this many standard deviations away from mean
 
     def prices_to_signals(self, prices):
@@ -121,8 +121,8 @@ class CLNativeCalendarSpreadStrategy(NativeCalendarSpreadStrategy):
 
     CODE = "calspread-native-cl"
     DB = "cl-combo-tick-1min"
-    CONTRACT_NUMS = (1, 3)
-    BBAND_LOOKBACK_WINDOW = 10
-    BBAND_STD = 1
+    CONTRACT_NUMS = (1, 2)
+    BBAND_LOOKBACK_WINDOW = 60
+    BBAND_STD = 2
     COMMISSION_CLASS = NymexCommission
     TIMEZONE = "America/New_York"
