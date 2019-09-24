@@ -1,0 +1,11 @@
+# quantrocket.moonshot.allocations.yml
+#
+# This file defines the percentage of total capital (Net Liquidation Value)
+# to allocate to Moonshot strategies.
+#
+
+# each top level key is an account number
+DU12345:
+    # each second-level key-value is a strategy code and the percentage
+    # of Net Liquidation Value to allocate
+    calspread-native-cl: 1 # allocate 100% of DU12345's Net Liquidation Value to calspread-native-cl

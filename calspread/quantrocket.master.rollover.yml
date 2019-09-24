@@ -1,0 +1,17 @@
+# quantrocket.master.rollover.yml
+#
+# This file instructs the QuantRocket master service how
+# to calculate rollover dates for futures.
+#
+# each top level key is an exchange code
+NYMEX:
+  # each second-level key is an underlying symbol
+  CL:
+    # the rollrule key defines how to derive the rollover date
+    # from the expiry/LastTradeDate; the arguments will be passed
+    # to bdateutil.relativedelta. For valid args, see:
+    # https://dateutil.readthedocs.io/en/stable/relativedelta.html
+    # https://github.com/ryanss/python-bdateutil#documentation
+    rollrule:
+      # roll 10 business days before expiry
+      bdays: -10
