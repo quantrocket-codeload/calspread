@@ -19,7 +19,7 @@ from quantrocket.master import get_contract_nums_reindexed_like
 
 
 class NymexCommission(FuturesCommission):
-    IB_COMMISSION_PER_CONTRACT = 0.85
+    BROKER_COMMISSION_PER_CONTRACT = 0.85
     EXCHANGE_FEE_PER_CONTRACT = 1.50 + 0.02
     CARRYING_FEE_PER_CONTRACT = 0  # Depends on equity in excess of margin requirement
 
@@ -32,7 +32,6 @@ class CalendarSpreadStrategy(Moonshot):
     CODE = None
     DB = None
     DB_FIELDS = ["Close", "Open"]
-    CONIDS = []
     LOOKBACK_WINDOW = 0  # explicitly set LOOKBACK_WINDOW to 0 to avoid loading too much data
     BBAND_LOOKBACK_WINDOW = 60  # Compute Bollinger Bands over this period (number of minutes)
     BBAND_STD = 2  # Set Bollinger Bands this many standard deviations away from mean

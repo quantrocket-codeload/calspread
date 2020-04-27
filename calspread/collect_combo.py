@@ -14,7 +14,7 @@
 
 import pandas as pd
 import io
-from quantrocket.master import download_master_file, create_combo
+from quantrocket.master import download_master_file, create_ibkr_combo
 from quantrocket.realtime import collect_market_data
 
 
@@ -44,17 +44,17 @@ def collect_combo(universe, contract_months, tick_db, until=None):
     contracts = pd.read_csv(f, index_col="RolloverDate", parse_dates=["RolloverDate"])
 
     # sort by RolloverDate
-    conids = contracts.ConId.sort_index().tolist()
+    sids = contracts.Sid.sort_index().tolist()
 
-    conid_1 = conids[contract_months[0] - 1]
-    conid_2 = conids[contract_months[1] - 1]
+    sid_1 = sids[contract_months[0] - 1]
+    sid_2 = sids[contract_months[1] - 1]
 
     # Create the combo if it doesn't already exist
-    result = create_combo([
-        ["BUY", 1, conid_1],
-        ["SELL", 1, conid_2]])
+    result = create_ibkr_combo([
+        ["BUY", 1, sid_1],
+        ["SELL", 1, sid_2]])
 
-    combo_conid = result["conid"]
+    combo_sid = result["sid"]
 
     # initiate data collection
-    collect_market_data(tick_db, conids=combo_conid, until=until)
+    collect_market_data(tick_db, sids=combo_sid, until=until)

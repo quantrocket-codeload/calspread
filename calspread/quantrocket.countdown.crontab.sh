@@ -11,11 +11,11 @@
 # *   *   *   *   *   command to be executed
 
 # make sure IB Gateway is running each weekday
-0 7 * * mon-fri quantrocket launchpad start
+0 7 * * mon-fri quantrocket ibg start
 
 # collect native combo data each morning
 0 8 * * mon-fri quantrocket satellite exec 'codeload.calspread.collect_combo.collect_combo' --params 'universe:cl-fut' 'contract_months:[1,2]' 'tick_db:cl-combo-tick' 'until:16:30:00 America/New_York'
 
 # Trade calspread-native-cl every minute from 9 AM to 4 PM. This command "paper trades" by logging orders to flightlog; to 
-# live or paper trade with IB, send orders to blotter instead
+# live or paper trade with broker, send orders to blotter instead
 * 9-15 * * mon-fri quantrocket moonshot trade 'calspread-native-cl' | quantrocket flightlog log -n 'quantrocket.moonshot'

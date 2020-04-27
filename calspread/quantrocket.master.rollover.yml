@@ -11,7 +11,7 @@ NYMEX:
     # from the expiry/LastTradeDate; the arguments will be passed
     # to bdateutil.relativedelta. For valid args, see:
     # https://dateutil.readthedocs.io/en/stable/relativedelta.html
-    # https://github.com/ryanss/python-bdateutil#documentation
+    # https://github.com/quantrocket-llc/python-bdateutil#documentation
     rollrule:
       # roll 10 business days before expiry
       bdays: -10

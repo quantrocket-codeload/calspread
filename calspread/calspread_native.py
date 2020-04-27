@@ -19,7 +19,7 @@ from quantrocket.master import get_contract_nums_reindexed_like
 
 
 class NymexCommission(FuturesCommission):
-    IB_COMMISSION_PER_CONTRACT = 0.85
+    BROKER_COMMISSION_PER_CONTRACT = 0.85
     EXCHANGE_FEE_PER_CONTRACT = 1.50 + 0.02
     CARRYING_FEE_PER_CONTRACT = 0  # Depends on equity in excess of margin requirement
 
