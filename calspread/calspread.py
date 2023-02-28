@@ -38,7 +38,7 @@ class CalendarSpreadStrategy(Moonshot):
     CONTRACT_NUMS = 1, 2  # the contract numbers from which to form the spread (1 = front month)
     FILL_AT_MIDPOINT = False # True to model getting filled at the midpoint, False to pay the spread
 
-    def prices_to_signals(self, prices):
+    def prices_to_signals(self, prices: pd.DataFrame):
         """
         Generates a DataFrame of signals indicating whether to long or short
         the spread.
@@ -103,17 +103,17 @@ class CalendarSpreadStrategy(Moonshot):
             -signals.where(are_month_b_contracts)).fillna(0)
         return signals
 
-    def signals_to_target_weights(self, signals, prices):
+    def signals_to_target_weights(self, signals: pd.DataFrame, prices: pd.DataFrame):
         # allocate half of capital to each signal
         weights = signals / 2
         return weights
 
-    def target_weights_to_positions(self, weights, prices):
+    def target_weights_to_positions(self, weights: pd.DataFrame, prices: pd.DataFrame):
         # Enter in the period after the signal
         positions = weights.shift()
         return positions
 
-    def positions_to_gross_returns(self, positions, prices):
+    def positions_to_gross_returns(self, positions: pd.DataFrame, prices: pd.DataFrame):
         bids = prices.loc["Open"]
         asks = prices.loc["Close"]
         midpoints = (bids + asks) / 2

@@ -36,7 +36,7 @@ class NativeCalendarSpreadStrategy(Moonshot):
     BBAND_LOOKBACK_WINDOW = 60  # Compute Bollinger Bands over this period (number of minutes)
     BBAND_STD = 2  # Set Bollinger Bands this many standard deviations away from mean
 
-    def prices_to_signals(self, prices):
+    def prices_to_signals(self, prices: pd.DataFrame):
         """
         Generates a DataFrame of signals indicating whether to long or short
         the spread.
@@ -68,7 +68,7 @@ class NativeCalendarSpreadStrategy(Moonshot):
 
         return signals
 
-    def signals_to_target_weights(self, signals, prices):
+    def signals_to_target_weights(self, signals: pd.DataFrame, prices: pd.DataFrame):
         """
         Convert signals to weights.
 
@@ -79,7 +79,7 @@ class NativeCalendarSpreadStrategy(Moonshot):
         weights = signals * 1000
         return weights
 
-    def limit_position_sizes(self, prices):
+    def limit_position_sizes(self, prices: pd.DataFrame):
         """
         Limit the position sizes to 1 spread contract.
 
@@ -91,12 +91,12 @@ class NativeCalendarSpreadStrategy(Moonshot):
         max_quantities_for_longs = max_quantities_for_shorts = ones
         return max_quantities_for_longs, max_quantities_for_shorts
 
-    def target_weights_to_positions(self, weights, prices):
+    def target_weights_to_positions(self, weights: pd.DataFrame, prices: pd.DataFrame):
         # Enter in the period after the signal
         positions = weights.shift()
         return positions
 
-    def positions_to_gross_returns(self, positions, prices):
+    def positions_to_gross_returns(self, positions: pd.DataFrame, prices: pd.DataFrame):
         bids = prices.loc["BidPriceClose"]
         asks = prices.loc["AskPriceClose"]
 
@@ -110,7 +110,7 @@ class NativeCalendarSpreadStrategy(Moonshot):
         gross_returns = trade_prices.pct_change() * positions.shift()
         return gross_returns
 
-    def order_stubs_to_orders(self, orders, prices):
+    def order_stubs_to_orders(self, orders: pd.DataFrame, prices: pd.DataFrame):
         orders["Exchange"] = "NYMEX"
         orders["OrderType"] = "MKT"
         orders["Tif"] = "DAY"
